@@ -4,7 +4,16 @@ from langgraph.graph import StateGraph, END
 from langchain_openai import ChatOpenAI
 
 # -------------------------
-# Define LangGraph State
+# App Title + Logo
+# -------------------------
+
+st.title("🍽️ Surprise Me with a Recipe!")
+
+# Local logo
+st.image("logo.png", width=200, caption="Shraddha's AI Chef")
+
+# -------------------------
+# LangGraph Setup
 # -------------------------
 
 class RecipeState:
@@ -50,8 +59,6 @@ runnable = graph.compile()
 # Streamlit UI
 # -------------------------
 
-st.title("🍽️ Surprise Me a Recipe!")
-
 cuisine = st.text_input("Which cuisine do you feel like eating?")
 ingredients = st.text_area("What ingredients do you have? (comma separated)")
 
@@ -59,5 +66,8 @@ if st.button("Surprise Me!"):
     with st.spinner("Cooking up a recipe..."):
         state = RecipeState(cuisine=cuisine, ingredients=ingredients)
         result = runnable.invoke(state)
-        st.markdown("## Here's your recipe!")
+        st.markdown(
+            "<h2 style='color:#E56B6F;'>Here's your recipe!</h2>",
+            unsafe_allow_html=True
+        )
         st.markdown(result.recipe)
